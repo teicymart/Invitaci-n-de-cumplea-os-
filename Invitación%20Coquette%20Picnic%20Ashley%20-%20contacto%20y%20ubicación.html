@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Little Picnic Affair - Ashley's 18th Birthday</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #F2ECE4;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: #4A3B32;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px 10px;
+      user-select: none;
+    }
+
+    /* Container Box */
+    .app-viewport {
+      width: 100%;
+      max-width: 900px;
+      height: 620px;
+      background-color: #FAF5EF;
+      border-radius: 28px;
+      box-shadow: 0 20px 50px rgba(184, 29, 40, 0.12);
+      position: relative;
+      overflow: hidden;
+      border: 3px solid #E5C3CB;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Gingham background option */
+    .gingham-bg {
+      background-color: #FFF9FA;
+      background-image: 
+        linear-gradient(90deg, rgba(244, 162, 185, 0.28) 50%, transparent 50%),
+        linear-gradient(rgba(244, 162, 185, 0.28) 50%, transparent 50%);
+      background-size: 32px 32px;
+    }
+
+    /* Slides Screen */
+    .screen {
+      display: none;
+      width: 100%;
+      height: 100%;
+      padding: 40px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.4s ease-in-out forwards;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards & Elements */
+    .vintage-card {
+      background: #FFFFFF;
+      border: 2px dashed #E5C3CB;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(184, 29, 40, 0.05);
+      padding: 32px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .cherry-tag {
+      background: #FDF3F5;
+      color: #B81D28;
+      border: 1px solid #F2BAC5;
+      border-radius: 30px;
+      padding: 6px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      display: inline-block;
+    }
+
+    /* Navigation Controls */
+    .nav-bar {
+      position: absolute;
+      bottom: 16px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 32px;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .btn-nav {
+      pointer-events: auto;
+      background: #FFFFFF;
+      color: #B81D28;
+      border: 2px solid #F2BAC5;
+      border-radius: 50px;
+      padding: 10px 22px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-nav:hover {
+      background: #B81D28;
+      color: #FFFFFF;
+      border-color: #B81D28;
+      transform: translateY(-2px);
+    }
+
+    .btn-nav:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      transform: none;
+      background: #FFF;
+      color: #B81D28;
+    }
+
+    .dots-indicator {
+      display: flex;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid #F2BAC5;
+      backdrop-filter: blur(4px);
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #E5C3CB;
+      transition: all 0.3s ease;
+    }
+
+    .dot.active {
+      background: #B81D28;
+      width: 20px;
+      border-radius: 10px;
+    }
+
+    .btn-action {
+      background: #B81D28;
+      color: #FFFFFF;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 20px rgba(184, 29, 40, 0.25);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-action:hover {
+      background: #96131C;
+      transform: scale(1.03);
+    }
+
+    /* Grid Layouts */
+    .grid-2x2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .grid-3x2 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      width: 100%;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .app-viewport { height: 680px; }
+      .screen { padding: 24px 20px 70px 20px; }
+      .grid-3x2, .grid-2x2 { grid-template-columns: 1fr; }
+      .nav-bar { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-viewport gingham-bg" id="appViewport">
+
+    <!-- PANTALLA 1: PORTADA / SOBRE -->
+    <div class="screen active" id="screen1">
+      <div class="vintage-card" style="text-align: center; max-width: 600px; background: #FAF5EF; border: 3px double #DCA8B3;">
+        <div style="font-size: 32px; margin-bottom: 8px;">🎀 🍒 🎀</div>
+        <p style="font-family:'Great Vibes', cursive; font-size: 38px; color: #B81D28; margin-bottom: 4px;">
+          Para ti, con mucho cariño…
+        </p>
+        <h1 style="font-family:'Cormorant Garamond', serif; font-size: 42px; font-weight: 700; color: #3A2E28; margin-bottom: 16px;">
+          Una invitación especial ♡
+        </h1>
+        <div style="width: 80px; height: 2px; background: #E5C3CB; margin: 0 auto 20px auto;"></div>
+        <div style="width: 100%; max-width: 380px; height: 180px; margin: 0 auto 24px auto; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
+          <img src="https://i.etsystatic.com/28102348/r/il/ede423/5674253139/il_570xN.5674253139_mnpk.jpg" alt="Sobre vintage" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <button class="btn-action" onclick="nextScreen()">
+          Toca el sobre para abrirlo 🎀
+        </button>
+      </div>
+    </div>
+
+    <!-- PANTALLA 2: INVITACIÓN PRINCIPAL -->
+    <div class="screen" id="screen2">
+      <div class="vintage-card" style="max-width: 700px; text-align: center; background: #FAF5EF;">
+        <span class="cherry-tag" style="margin-bottom: 12px;">YOU'RE INVITED 🍒</span>
+        <h2 style="font-family:'Cormorant Garamond', serif; font-size: 46px; font-weight: 700; color: #B81D28; margin-bottom: 8px;">
+          A LITTLE PICNIC AFFAIR
+        </h2>
+        <p style="font-family:'Great Vibes', cursive; font-size: 34px; color: #6B5344; margin-bottom: 20px;">
+          Una tarde de flores, dulces, juegos y momentos bonitos. ♡
+        </p>
+        <div style="background: #FFF8F9; border-left: 4px solid #B81D28; padding: 20px; border-radius: 0 16px 16px 0; margin-bottom: 16px; text-align: left;">
+          <h3 style="font-family:'Cormorant Garamond', serif; font-size: 28px; color: #3A2E28; margin-bottom: 4px;">
+            ASHLEY'S 18TH BIRTHDAY
+          </h3>
+          <p style="font-size: 16px; color: #7A6253;">
+            Me encantaría compartir este día contigo. 🍒
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANTALLA 3: FECHA, HORA Y LUGAR -->
+    <div class="screen" id="screen3">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <p style="font-family:'Great Vibes', cursive; font-size: 28px; color: #B81D28;">detalles del evento</p>
+        <h2 style="font-family:'Cormorant Garamond', serif; font-size: 40px; font-weight: 700; color: #3A2E28;">
+          SAVE THE DATE 🍒
+        </h2>
+      </div>
+      <div class="grid-3x2" style="margin-bottom: 20px;">
+        <div class="vintage-card" style="text-align: center; padding: 20px;">
+          <i class="fa-regular fa-calendar-heart" style="font-size: 28px; color: #B81D28; margin-bottom: 8px;"></i>
+          <h3 style="font-family:'Cormorant Garamond', serif; font-size: 20px; color: #B81D28;">FECHA</h3>
+          <p style="font-weight: 700; font-size: 16px;">16 DE OCTUBRE, 2026</p>
+        </div>
+        <div class="vintage-card" style="text-align: center; padding: 20px;">
+          <i class="fa-regular fa-clock" style="font-size: 28px; color: #B81D28; margin-bottom: 8px;"></i>
+          <h3 style="font-family:'Cormorant Garamond', serif; font-size: 20px; color: #B81D28;">HORA</h3>
+          <p style="font-weight: 700; font-size: 16px;">2:00 PM A 7:00 PM</p>
+        </div>
+        <div class="vintage-card" style="text-align: center; padding: 20px;">
+          <i class="fa-solid fa-location-dot" style="font-size: 28px; color: #B81D28; margin-bottom: 8px;"></i>
+          <h3 style="font-family:'Cormorant Garamond', serif; font-size: 20px; color: #B81D28;">LUGAR</h3>
+          <p style="font-weight: 700; font-size: 16px;">Lago El Refugio</p>
+        </div>
+      </div>
+      <a href="https://maps.google.com" target="_blank" class="btn-action">
+        📍 VER UBICACIÓN EN GOOGLE MAPS
+      </a>
+    </div>
+
+    <!-- PANTALLA 4: DRESS CODE -->
+    <div class="screen" id="screen4">
+      <div style="text-align: center; margin-bottom: 16px;">
+        <h2 style="font-family:'Cormorant Garamond', serif; font-size: 38px; font-weight: 700; color: #3A2E28;">
+          DRESS CODE 🎀
+        </h2>
+        <p style="font-family:'Cormorant Garamond', serif; font-size: 20px; font-style: italic; color: #7A6253;">
+          "Come dressed like a little dream."
+        </p>
+      </div>
+      <div class="grid-2x2" style="margin-bottom: 16px;">
+        <div class="vintage-card" style="padding: 16px; text-align: center;">
+          <div style="font-size: 24px;">🎀</div>
+          <h4 style="font-family:'Cormorant Garamond', serif; font-size: 20px; color: #B81D28;">COQUETTE</h4>
+          <p style="font-size: 13px; color: #6B5344;">Ribbons, lace, pearls & pretty dresses encouraged. ♡</p>
+        </div>
+        <div class="vintage-card" style="padding: 16px; text-align: center;">
+          <div style="font-size: 24px;">🌷</div>
+          <h4 style="font-family:'Cormorant Garamond', serif; font-size: 20px; color: #B81D28;">VINTAGE</h4>
+          <p style="font-size: 13px; color: #6B5344;">Ribbons, lace, pearls & pretty dresses encouraged. ♡</p>
+        </div>
+        <div class="vintage-card" style="padding: 16px; text-align: center;">
+          <div style="font-size: 24px;">🩰</div>
+          <h4 style="font-family:'Cormorant Garamond', serif; font-size: 20px; color: #B81D28;">SOFT & FEMININE</h4>
+          <p style="font-size: 13px; color: #6B5344;">Ribbons, lace, pearls & pretty dresses encouraged. ♡</p>
+        </div>
+        <div class="vintage-card" style="padding: 16px; text-align: center;">
+          <div style="font-size: 24px;">🍒</div>
+          <h4 style="font-family:'Cormorant Garamond', serif; font-size: 20px; color: #B81D28;">PASTEL COLORS</h4>
+          <p style="font-size: 13px; color: #6B5344;">Ribbons, lace, pearls & pretty dresses encouraged. ♡</p>
+        </div>
+      </div>
+      <p style="font-size: 14px; color: #7A6253; text-align: center;">
+        Inspírate, pero ven como te haga sentir más bonita/o.
+      </p>
+    </div>
+
+    <!-- PANTALLA 5: EXPERIENCIA -->
+    <div class="screen" id="screen5">
+      <div style="text-align: center; margin-bottom: 16px;">
+        <h2 style="font-family:'Cormorant Garamond', serif; font-size: 38px; font-weight: 700; color: #3A2E28;">
+          A LITTLE AFTERNOON TOGETHER 🧺
+        </h2>
+      </div>
+      <div class="grid-3x2">
+        <div class="vintage-card" style="padding: 16px;">
+          <h4 style="color: #B81D28;">🍓 COMIDA</h4>
+          <p style="font-size: 13px;">Habrá cositas ricas y delicias para compartir.</p>
+        </div>
+        <div class="vintage-card" style="padding: 16px;">
+          <h4 style="color: #B81D28;">🧺 PICNIC</h4>
+          <p style="font-size: 13px;">Tarde relajada al aire libre sobre el mantel.</p>
+        </div>
+        <div class="vintage-card" style="padding: 16px;">
+          <h4 style="color: #B81D28;">🎲 JUEGOS</h4>
+          <p style="font-size: 13px;">Trae tu espíritu competitivo… habrá revancha. ♡</p>
+        </div>
+        <div class="vintage-card" style="padding: 16px;">
+          <h4 style="color: #B81D28;">📸 FOTOS</h4>
+          <p style="font-size: 13px;">Vamos a llenar el carrete de recuerdos bonitos.</p>
+        </div>
+        <div class="vintage-card" style="padding: 16px;">
+          <h4 style="color: #B81D28;">🎶 MÚSICA</h4>
+          <p style="font-size: 13px;">Melodías tranquilas para amenizar el ambiente.</p>
+        </div>
+        <div class="vintage-card" style="padding: 16px;">
+          <h4 style="color: #B81D28;">🌷 DETALLES</h4>
+          <p style="font-size: 13px;">Disfrutar al máximo de buena compañía.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANTALLA 6: PEQUEÑO DETALLE -->
+    <div class="screen" id="screen6">
+      <div class="vintage-card" style="text-align: center; max-width: 650px;">
+        <h2 style="font-family:'Cormorant Garamond', serif; font-size: 38px; color: #B81D28; margin-bottom: 8px;">
+          A LITTLE SOMETHING… 🎀
+        </h2>
+        <p style="font-size: 16px; color: #6B5344; margin-bottom: 20px;">
+          ¿Quieres traerme un pequeño detalle? Solo si nace de ti. ♡
+        </p>
+        <div style="text-align: left; font-size: 0.85rem; margin: 15px 0; line-height: 1.6;">
+          <p>🌷 <b>Un ramo que quieras regalarme</b></p>
+          <p>🍓 <b>Alguna fruta o algo para compartir en el picnic</b></p>
+          <p>🎀 <b>Un pequeño detalle hecho por ti</b></p>
+          <p>🍒 <b>Algo que me recuerde a ti</b></p>
+          <p>💌 <b>Una carta con bonitas palabras</b></p>
+        </div>
+        <p style="font-size: 0.75rem; color: #777;">Tu compañía ya es mi mejor regalo. ♡</p>
+      </div>
+    </div>
+
+    <!-- PANTALLA 7: WISHLIST -->
+    <div class="screen" id="screen7">
+      <div style="text-align: center; margin-bottom: 16px;">
+        <span class="cherry-tag">LITTLE WISHES 🍒</span>
+        <h2 style="font-family:'Cormorant Garamond', serif; font-size: 36px; color: #B81D28; margin-top: 6px;">
+          LITTLE WISHES
+        </h2>
+        <p style="font-size: 14px; color: #6B5344;">Ideas por si quieres consentirme:</p>
+      </div>
+      <div class="grid-2x2">
+        <div class="vintage-card" style="padding: 16px; background: #FFF;">
+          <h4 style="color: #B81D28; margin-bottom: 6px;">📚 LIBROS</h4>
+          <p style="font-size: 13px;">Saga <i>La Elegida</i> de Kiera Cass o el 2º libro de <i>Juego de Tronos</i> (Choque de Reyes).</p>
+        </div>
+        <div class="vintage-card" style="padding: 16px; background: #FFF;">
+          <h4 style="color: #B81D28; margin-bottom: 6px;">💍 ACCESORIOS</h4>
+          <p style="font-size: 13px;">Pulseras, anillos, collares, cositas para el cabello o una peluca (de un color que no me hayas visto, preferiblemente larga).</p>
+        </div>
+        <div class="vintage-card" style="padding: 16px; background: #FFF;">
+          <h4 style="color: #B81D28; margin-bottom: 6px;">🌷 FLORES</h4>
+          <p style="font-size: 13px;">Orquídeas (preferiblemente en maceta), especialmente en tonos morados 💜 o amarillos 💛.</p>
+        </div>
+        <div class="vintage-card" style="padding: 16px; background: #FFF;">
+          <h4 style="color: #B81D28; margin-bottom: 6px;">💄 BEAUTY</h4>
+          <p style="font-size: 13px;">Maquillaje, mascarillas o productos de cuidado para el rostro, piel o cabello.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANTALLA 8: RSVP -->
+    <div class="screen" id="screen8">
+      <div class="vintage-card" style="text-align: center; max-width: 600px; background: #FAF5EF;">
+        <div style="font-size: 32px; margin-bottom: 8px;">💌</div>
+        <h2 style="font-family:'Cormorant Garamond', serif; font-size: 42px; color: #3A2E28; margin-bottom: 8px;">
+          RSVP — ¿NOS ACOMPAÑAS? ♡
+        </h2>
+        <p style="font-size: 16px; color: #6B5344; margin-bottom: 24px;">
+          Por favor confirma lo antes posible para preparar todo. ♡
+        </p>
+        <a href="https://wa.me/?text=Hola%20Ashy,%20confirmo%20mi%20asistencia%20al%20picnic.%20🎀🍒" target="_blank" class="btn-action" style="font-size: 18px;">
+          🍒 CONFIRMAR VÍA WHATSAPP
+        </a>
+      </div>
+    </div>
+
+    <!-- PANTALLA 9: CIERRE -->
+    <div class="screen" id="screen9" style="background: linear-gradient(180deg, rgba(28,20,18,0.85) 0%, rgba(28,20,18,0.95) 100%), url('https://cdn.shopify.com/s/files/1/1495/8894/files/IMG_5337_cb347466-1e16-40e4-9eef-cac540dc007d_2048x2048.jpg?v=1738003223') center/cover; color: #FFF; text-align: center;">
+      <p style="font-family:'Great Vibes', cursive; font-size: 42px; color: #F2BAC5; margin-bottom: 8px;">
+        Nos vemos pronto… ♡
+      </p>
+      <h2 style="font-family:'Cormorant Garamond', serif; font-size: 40px; font-weight: 700; margin-bottom: 16px; line-height: 1.2;">
+        Can't wait to make beautiful memories with you.
+      </h2>
+      <div style="font-size: 20px; font-weight: 700; color: #F2BAC5; letter-spacing: 3px; margin-bottom: 16px;">
+        🍒 16 · 10 · 2026 🍒
+      </div>
+      <p style="font-family:'Cormorant Garamond', serif; font-size: 24px; font-style: italic; color: #E5C3CB;">
+        With love, Ashley 🎀
+      </p>
+    </div>
+
+    <!-- BARRA DE NAVEGACIÓN -->
+    <div class="nav-bar">
+      <button class="btn-nav" id="btnPrev" onclick="prevScreen()">
+        <i class="fa-solid fa-arrow-left"></i> Anterior
+      </button>
+
+      <div class="dots-indicator" id="dotsContainer"></div>
+
+      <button class="btn-nav" id="btnNext" onclick="nextScreen()">
+        Siguiente <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    let currentScreen = 1;
+    const totalScreens = 9;
+
+    const dotsContainer = document.getElementById('dotsContainer');
+
+    // Create dots
+    for (let i = 1; i <= totalScreens; i++) {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      if (i === 1) dot.classList.add('active');
+      dotsContainer.appendChild(dot);
+    }
+
+    function updateScreens() {
+      // Hide all screens
+      for (let i = 1; i <= totalScreens; i++) {
+        const screen = document.getElementById(`screen${i}`);
+        screen.classList.remove('active');
+      }
+
+      // Show active screen
+      const activeScreen = document.getElementById(`screen${currentScreen}`);
+      activeScreen.classList.add('active');
+
+      // Gingham contrast check
+      const viewport = document.getElementById('appViewport');
+      if ([1, 5, 7, 8].includes(currentScreen)) {
+        viewport.classList.add('gingham-bg');
+      } else {
+        viewport.classList.remove('gingham-bg');
+      }
+
+      // Update dots
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, index) => {
+        if (index + 1 === currentScreen) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+
+      // Enable/Disable buttons
+      document.getElementById('btnPrev').disabled = currentScreen === 1;
+      document.getElementById('btnNext').disabled = currentScreen === totalScreens;
+    }
+
+    function nextScreen() {
+      if (currentScreen < totalScreens) {
+        currentScreen++;
+        updateScreens();
+      }
+    }
+
+    function prevScreen() {
+      if (currentScreen > 1) {
+        currentScreen--;
+        updateScreens();
+      }
+    }
+
+    updateScreens();
+  </script>
+</body>
+</html>
